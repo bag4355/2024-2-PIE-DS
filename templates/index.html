@@ -8,14 +8,79 @@
 <body>
     <h1>식당 추천 시스템</h1>
     <form action="/recommend" method="post">
-        <label for="rank">추천 기준 우선순위를 입력하세요:</label><br>
-        <input type="text" id="rank" name="rank" placeholder="맛있음, 위생, 서비스, ..."><br><br>
-        
-        <label for="score_threshold">최소 점수 기준:</label><br>
-        <input type="number" id="score_threshold" name="score_threshold" placeholder="0"><br><br>
+        <h3>기준별 중요도를 선택하세요 (1: 낮음 ~ 5: 높음)</h3>
 
-        <label for="top_n">표시할 상위 식당 개수:</label><br>
-        <input type="number" id="top_n" name="top_n" placeholder="10"><br><br>
+        <label for="맛있음">맛있음:</label>
+        <select id="맛있음" name="맛있음">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <label for="위생">위생:</label>
+        <select id="위생" name="위생">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <label for="서비스">서비스:</label>
+        <select id="서비스" name="서비스">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <label for="분위기">분위기:</label>
+        <select id="분위기" name="분위기">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <label for="위치접근성">위치접근성:</label>
+        <select id="위치접근성" name="위치접근성">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <label for="대기시간">대기시간:</label>
+        <select id="대기시간" name="대기시간">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <label for="가성비">가성비:</label>
+        <select id="가성비" name="가성비">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <label for="가격">가격:</label>
+        <select id="가격" name="가격">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
 
         <button type="submit">추천 받기</button>
     </form>
