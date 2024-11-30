@@ -34,6 +34,9 @@ def recommend():
         '가격': int(request.form['가격']),
     }
 
+    score_threshold = float(request.form.get('score_threshold', 0))
+    sort_by = request.form.get('sort_by', '평균 점수')
+
     # 점수 계산 함수
     def calculate_scores(summary_df):
         summary_df['추천 점수'] = summary_df.apply(
@@ -52,10 +55,17 @@ def recommend():
     scores_2 = calculate_scores(summary_2)
 
     # 결과 통합
-    result_1 = scores_1.to_frame(name='추천 점수 1').reset_index()
-    result_2 = scores_2.to_frame(name='추천 점수 2').reset_index()
+    result_1 = scores_1.to_frame(name='광고성 리뷰 포함').reset_index()
+    result_2 = scores_2.to_frame(name='광고성 리뷰 제거').reset_index()
 
     merged_results = pd.merge(result_1, result_2, on='식당 이름', how='outer').fillna(0)
+
+    # 평균 점수 계산 및 필터링
+    merged_results['평균 점수'] = merged_results[['광고성 리뷰 포함', '광고성 리뷰 제거']].mean(axis=1)
+    merged_results = merged_results[merged_results['평균 점수'] >= score_threshold]
+
+    # 정렬
+    merged_results = merged_results.sort_values(by=sort_by, ascending=False).head(5)
 
     # Plotly로 그래프 생성
     fig = px.bar(
@@ -64,11 +74,21 @@ def recommend():
         y='식당 이름',
         color='데이터셋',
         barmode='group',
-        title="추천 식당 순위 비교",
+        title="신촌 식당 추천 결과",
         text='추천 점수'
     )
     fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
-    fig.update_layout(yaxis={'categoryorder': 'total ascending'})
+    fig.update_layout(
+        yaxis={'categoryorder': 'total ascending'},
+        annotations=[
+            dict(
+                text="제작자: 산업공학회 PIE 24-2 DS 학회원 강태희, 고민지, 김건우, 김세원, 김채연, 안성진",
+                xref="paper", yref="paper",
+                x=0, y=-0.2,
+                showarrow=False
+            )
+        ]
+    )
 
     # HTML 그래프 생성
     graph_html = fig.to_html(full_html=False)
@@ -78,5 +98,3 @@ if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 5000))  # Render에서 제공하는 포트를 가져옴
     app.run(host='0.0.0.0', port=port)  # 0.0.0.0으로 외부에서 접속 가능하게 설정
-
-

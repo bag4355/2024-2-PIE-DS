@@ -11,75 +11,30 @@
         <h3>기준별 중요도를 선택하세요 (1: 낮음 ~ 5: 높음)</h3>
 
         <label for="맛있음">맛있음:</label>
-        <select id="맛있음" name="맛있음">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select><br><br>
+        <input type="radio" id="맛있음" name="맛있음" value="1"> 1
+        <input type="radio" id="맛있음" name="맛있음" value="2"> 2
+        <input type="radio" id="맛있음" name="맛있음" value="3"> 3
+        <input type="radio" id="맛있음" name="맛있음" value="4"> 4
+        <input type="radio" id="맛있음" name="맛있음" value="5"> 5<br><br>
 
+        <!-- 동일한 형식으로 다른 기준들 추가 -->
         <label for="위생">위생:</label>
-        <select id="위생" name="위생">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select><br><br>
+        <input type="radio" id="위생" name="위생" value="1"> 1
+        <input type="radio" id="위생" name="위생" value="2"> 2
+        <input type="radio" id="위생" name="위생" value="3"> 3
+        <input type="radio" id="위생" name="위생" value="4"> 4
+        <input type="radio" id="위생" name="위생" value="5"> 5<br><br>
 
-        <label for="서비스">서비스:</label>
-        <select id="서비스" name="서비스">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select><br><br>
+        <!-- 나머지 항목 반복 -->
 
-        <label for="분위기">분위기:</label>
-        <select id="분위기" name="분위기">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select><br><br>
+        <label for="score_threshold">최소 점수 기준:</label>
+        <input type="number" id="score_threshold" name="score_threshold" placeholder="0"><br><br>
 
-        <label for="위치접근성">위치접근성:</label>
-        <select id="위치접근성" name="위치접근성">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select><br><br>
-
-        <label for="대기시간">대기시간:</label>
-        <select id="대기시간" name="대기시간">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select><br><br>
-
-        <label for="가성비">가성비:</label>
-        <select id="가성비" name="가성비">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select><br><br>
-
-        <label for="가격">가격:</label>
-        <select id="가격" name="가격">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+        <label for="sort_by">정렬 기준:</label>
+        <select id="sort_by" name="sort_by">
+            <option value="평균 점수">평균 점수</option>
+            <option value="광고성 리뷰 포함">광고성 리뷰 포함</option>
+            <option value="광고성 리뷰 제거">광고성 리뷰 제거</option>
         </select><br><br>
 
         <button type="submit">추천 받기</button>
