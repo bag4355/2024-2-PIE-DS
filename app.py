@@ -34,6 +34,7 @@ def recommend():
         '가격': int(request.form['가격']),
     }
 
+    n_top = int(request.form.get('top_n', 5))  # 상위 N개 식당
     score_threshold = float(request.form.get('score_threshold', 0))
     sort_by = request.form.get('sort_by', '평균 점수')
 
@@ -64,10 +65,11 @@ def recommend():
     merged_results['평균 점수'] = merged_results[['광고성 리뷰 포함', '광고성 리뷰 제거']].mean(axis=1)
     merged_results = merged_results[merged_results['평균 점수'] >= score_threshold]
 
-    # 정렬
-    merged_results = merged_results.sort_values(by=sort_by, ascending=False).head(5)
+    # 정렬 및 상위 N개 추출
+    merged_results = merged_results.sort_values(by=sort_by, ascending=False).head(n_top)
 
     # Plotly로 그래프 생성
+    min_value = merged_results['평균 점수'].min() * 0.8  # 가장 작은 값의 0.8배 계산
     fig = px.bar(
         merged_results.melt(id_vars='식당 이름', var_name='데이터셋', value_name='추천 점수'),
         x='추천 점수',
@@ -80,6 +82,7 @@ def recommend():
     fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
     fig.update_layout(
         yaxis={'categoryorder': 'total ascending'},
+        xaxis=dict(range=[min_value, merged_results['추천 점수'].max() * 1.2]),
         annotations=[
             dict(
                 text="제작자: 산업공학회 PIE 24-2 DS 학회원 강태희, 고민지, 김건우, 김세원, 김채연, 안성진",

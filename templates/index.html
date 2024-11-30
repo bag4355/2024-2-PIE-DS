@@ -66,9 +66,15 @@
         <input type="radio" id="가격" name="가격" value="4"> 4
         <input type="radio" id="가격" name="가격" value="5"> 5<br><br>
 
+        <!-- 최소 점수 기준 -->
         <label for="score_threshold">최소 점수 기준:</label>
         <input type="number" id="score_threshold" name="score_threshold" placeholder="0"><br><br>
 
+        <!-- 상위 N개 입력 -->
+        <label for="top_n">상위 N개의 식당:</label>
+        <input type="number" id="top_n" name="top_n" placeholder="5" required><br><br>
+
+        <!-- 정렬 기준 -->
         <label for="sort_by">정렬 기준:</label>
         <select id="sort_by" name="sort_by">
             <option value="평균 점수">평균 점수</option>
