@@ -6,9 +6,14 @@
     <title>추천 결과</title>
 </head>
 <body>
-    <h1>추천 식당 순위 비교</h1>
+    <h1>추천 결과</h1>
     <div>
-        {{ graph_html | safe }}
+        <h2>막대 그래프</h2>
+        {{ bar_html | safe }}
+    </div>
+    <div>
+        <h2>원형 차트</h2>
+        {{ pie_html | safe }}
     </div>
     <a href="/">다시 입력하기</a>
 </body>

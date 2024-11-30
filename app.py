@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 import pandas as pd
 import plotly.express as px
-import os
+import plotly.graph_objects as go
 
 app = Flask(__name__)
 
@@ -11,14 +11,13 @@ data2 = pd.read_excel('data2.xlsx')
 data3 = pd.read_excel('data3.xlsx')
 data4 = pd.read_excel('data4.xlsx')
 
+# 데이터 병합
 data = pd.concat([data1, data2, data3, data4], axis=1)
 columns_list = data.columns.tolist()
 
-# summary 데이터 읽기
-summary_1 = pd.read_excel('summary_광고비처리1.xlsx')
-summary_2 = pd.read_excel('summary_광고비처리2.xlsx')
+summary_1 = pd.read_excel('summary_광고비처리.xlsx')
+summary_2 = pd.read_excel('summary_찐리뷰만.xlsx')
 
-# 가중치 설정
 weights = {
     '맛있음': 10,
     '위생': 8,
@@ -38,6 +37,8 @@ def index():
 def recommend():
     # 사용자 입력 받기
     rank = request.form['rank'].split(", ")
+    score_threshold = float(request.form.get('score_threshold', 0))
+    top_n = int(request.form.get('top_n', 10))
 
     # 가중치 계산
     ranked_weights = {criterion: weights[criterion] * (len(rank) - i) for i, criterion in enumerate(rank)}
@@ -49,9 +50,7 @@ def recommend():
             if row['클래스 설명'] in ranked_weights else 0,
             axis=1
         )
-        # 식당별 점수 합산 및 정렬
         final_scores = summary_df.groupby('식당 이름')['추천 점수'].sum().sort_values(ascending=False)
-        # 식당 이름 추출
         final_scores_renamed = final_scores.rename(
             lambda x: columns_list[int(x.split('_')[1]) - 1]
         )
@@ -67,8 +66,13 @@ def recommend():
 
     merged_results = pd.merge(result_1, result_2, on='식당 이름', how='outer').fillna(0)
 
-    # Plotly로 그래프 생성
-    fig = px.bar(
+    # 필터 적용
+    merged_results['평균 점수'] = merged_results[['추천 점수 1', '추천 점수 2']].mean(axis=1)
+    merged_results = merged_results[merged_results['평균 점수'] >= score_threshold]
+    merged_results = merged_results.nlargest(top_n, '평균 점수')
+
+    # Plotly 시각화: 막대 그래프
+    bar_fig = px.bar(
         merged_results.melt(id_vars='식당 이름', var_name='데이터셋', value_name='추천 점수'),
         x='추천 점수',
         y='식당 이름',
@@ -77,14 +81,24 @@ def recommend():
         title="추천 식당 순위 비교",
         text='추천 점수'
     )
-    fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
-    fig.update_layout(yaxis={'categoryorder': 'total ascending'})
+    bar_fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+    bar_fig.update_layout(yaxis={'categoryorder': 'total ascending'})
 
-    # 그래프를 HTML로 변환
-    graph_html = fig.to_html(full_html=False)
-    return render_template('result.html', graph_html=graph_html)
+    # Plotly 시각화: 원형 차트
+    pie_fig = px.pie(
+        merged_results,
+        names='식당 이름',
+        values='평균 점수',
+        title="식당 점유율 (평균 점수 기준)"
+    )
+
+    # HTML 그래프 생성
+    bar_html = bar_fig.to_html(full_html=False)
+    pie_html = pie_fig.to_html(full_html=False)
+
+    return render_template('result.html', bar_html=bar_html, pie_html=pie_html)
 
 if __name__ == '__main__':
-    #app.run(debug=True)
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
+    app.run(debug=True)
+
 

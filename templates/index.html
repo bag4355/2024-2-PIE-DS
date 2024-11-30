@@ -10,6 +10,13 @@
     <form action="/recommend" method="post">
         <label for="rank">추천 기준 우선순위를 입력하세요:</label><br>
         <input type="text" id="rank" name="rank" placeholder="맛있음, 위생, 서비스, ..."><br><br>
+        
+        <label for="score_threshold">최소 점수 기준:</label><br>
+        <input type="number" id="score_threshold" name="score_threshold" placeholder="0"><br><br>
+
+        <label for="top_n">표시할 상위 식당 개수:</label><br>
+        <input type="number" id="top_n" name="top_n" placeholder="10"><br><br>
+
         <button type="submit">추천 받기</button>
     </form>
 </body>
