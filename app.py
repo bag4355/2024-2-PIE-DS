@@ -99,6 +99,8 @@ def recommend():
     return render_template('result.html', bar_html=bar_html, pie_html=pie_html)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get("PORT", 5000))  # Render에서 제공하는 포트를 가져옴
+    app.run(host='0.0.0.0', port=port)  # 0.0.0.0으로 외부에서 접속 가능하게 설정
 
 
